@@ -40,7 +40,22 @@ element = driver.find_element_by_name('ctrack-field')
 element.send_keys('SELB37758700')
 submitBtn = driver.find_element_by_id('trackform')
 submitBtn.find_element_by_class_name('btn-small').submit()
+
+
+driver.switch_to.window(driver.window_handles[-1])
+time.sleep(3)
+table = driver.find_element_by_class_name('ui-jqgrid-btable')
+tbody = table.find_element_by_tag_name('tbody')
+rows = tbody.find_elements_by_tag_name("tr")
+body = rows[0].find_elements_by_tag_name("td")[3]
+# ctr = body.find_element_by_tag_name('a')
+print(body.text)
+
+# for index, value in enumerate(rows):
+#     body=value.find_elements_by_tag_name("td")[2]
+#     print(body.text)
+#     break
+# ctrNo.click()
 # 여기까지가 BL 번호 치고 조회
 # BL번호는 ONE의 경우 ONEY를 떼고 조회해야지 나옴.
 # 찾아야 할 부분 찾아서 for 문으로 돌리고 해당하는 정보 엑셀 저장. 
-ctr = driver.find_element_by_css_selector('\31  > td:nth-child(4)')
