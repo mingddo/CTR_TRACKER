@@ -1,5 +1,6 @@
 import selenium
 import time
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import chromedriver_autoinstaller
@@ -20,7 +21,6 @@ except:
 # print(driver.current_url)
 URL = 'https://www.one-line.com/en'
 driver.get(url=URL)
-print(driver.current_url)
 driver.implicitly_wait(0.5)
 
 # 자동화 크롬으로 열기 위에는 디버깅 크롬으로 열기 (쿠키 때문에 이렇게 함.)
@@ -29,12 +29,17 @@ driver.implicitly_wait(0.5)
 # driver = webdriver.Chrome(options=options)
 
 # ONE 크롤링
-# options = webdriver.ChromeOptions()
-# options.add_experimental_option("excludeSwitches", ["enable-logging"])
-# driver = webdriver(options=options)
-### 추가된 부분 오류 해결
-# chromedriver = 'chromedriver.exe'
-# driver = webdriver.Chrome(chromedriver)
+def CTRdtailSave():
+ table = driver.find_elements_by_id('detail')
+ thead = table.find_element_by_tag_name('thead')
+ tbody = table.find_element_by_tag_name('tbody')
+ tr_list = tbody.find_elemnets_by_tag_name('tr')
+ th_list = thead.find_elements_by_tag_name('th')
+ #헤더 저장
+ result = []
+
+
+
 
 element = driver.find_element_by_name('ctrack-field')
 element.send_keys('SELB37758700')
@@ -43,19 +48,19 @@ submitBtn.find_element_by_class_name('btn-small').submit()
 
 
 driver.switch_to.window(driver.window_handles[-1])
-time.sleep(3)
+time.sleep(1.5)
 table = driver.find_element_by_class_name('ui-jqgrid-btable')
 tbody = table.find_element_by_tag_name('tbody')
 rows = tbody.find_elements_by_tag_name("tr")
-body = rows[0].find_elements_by_tag_name("td")[3]
-# ctr = body.find_element_by_tag_name('a')
-print(body.text)
-
-# for index, value in enumerate(rows):
-#     body=value.find_elements_by_tag_name("td")[2]
-#     print(body.text)
-#     break
-# ctrNo.click()
+for idx, value in enumerate(rows):
+    if idx == 0:
+        continue
+    temp = driver.find_element_by_xpath('/html/body/div[3]/div[2]/div/form/div[2]/div[2]/div/div[3]/div[3]/div/table/tbody/tr['+str(idx+1)+']/td[4]/a')
+    print(temp.text)
+    # 클릭 후 디테일 테이블을 엑셀로 저장하기
+    temp.click()
+    time.sleep(3)
+    # CTRdtailSave()
 # 여기까지가 BL 번호 치고 조회
 # BL번호는 ONE의 경우 ONEY를 떼고 조회해야지 나옴.
 # 찾아야 할 부분 찾아서 for 문으로 돌리고 해당하는 정보 엑셀 저장. 
