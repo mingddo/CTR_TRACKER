@@ -37,8 +37,8 @@ def CTRdtailSave():
  th_list = thead.find_elements_by_tag_name('th')
  #헤더 저장
  result = []
-
-
+ for idx, tr in enumerate(tr_list):
+     pass
 
 
 element = driver.find_element_by_name('ctrack-field')
